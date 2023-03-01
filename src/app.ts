@@ -1,21 +1,29 @@
 // const express = require('express')
 import * as express from "express";
+import {Cat, CatType} from "./app.model";
 
 const app: express.Express = express();
 // const app: express.Application = express();  // 이렇게 해도 작
 const port: number = 8000;
-
 console.log(`server is started at port ${port}`)
 
-// 밑에 있는 것을 router 라고 부른다
-// app.get('/', (req: express.Request, res: express.Response) => {
-app.get('/', (req,res) => {
-    console.log(req)
-    res.send('Hello World!')
-})
 
 app.listen(port, () => {
     console.log(`Example app listenting at http://localhost:${port}`)
+})
+
+// 모킹 데이터
+app.get('/', (req: express.Request, res: express.Response) => {
+    console.log(req);
+    res.send({data: Cat})
+});
+
+
+// 밑에 있는 것을 router 라고 부른다
+// app.get('/', (req: express.Request, res: express.Response) => {
+app.get('/test', (req,res) => {
+    console.log(req)
+    res.send('Hello World!')
 })
 
 // npm install --global nodemon

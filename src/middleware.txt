@@ -1,0 +1,8 @@
+미들웨어란 양쪽을 연결하여 매개 역할을 한다
+예를 들어,
+
+app.get('/', function(req,res,next){
+    next();
+})
+
+app.listen(3000);

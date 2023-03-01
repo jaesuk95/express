@@ -5,6 +5,21 @@ import {Cat, CatType} from "./app.model";
 const app: express.Express = express();
 // const app: express.Application = express();  // 이렇게 해도 작
 const port: number = 8000;
+
+// middleware
+// 주의: middleware 는 맨 앞에 있어야 한다, 끝에 있으면 안 읽음. 순서가 중요하다
+app.use((req,res,next)=> {
+    console.log(req.rawHeaders[3])
+    console.log('middleware has been processed')
+    next();
+})
+
+// 추가 middleware 과정
+app.get('/cats/som', (req,res,next)=> {
+    console.log('this middleware is specifically for "som" cat');
+    next();
+})
+
 console.log(`server is started at port ${port}`)
 
 
@@ -12,19 +27,42 @@ app.listen(port, () => {
     console.log(`Example app listenting at http://localhost:${port}`)
 })
 
+app.get('/cats/blue', (req,res) => {
+    // console.log(req.rawHeaders[3])
+    console.log('/cats/blue has been called')
+    res.send({blue: Cat[0]})
+});
+
+app.get('/cats/som', (req,res) => {
+    // console.log(req.rawHeaders[3])
+    console.log('/cats/som has been called')
+    res.send({som: Cat[1]})
+});
+
 // 모킹 데이터
 app.get('/', (req: express.Request, res: express.Response) => {
     console.log(req);
+    console.log(req.rawHeaders[1])
     res.send({data: Cat})
 });
 
 
 // 밑에 있는 것을 router 라고 부른다
 // app.get('/', (req: express.Request, res: express.Response) => {
-app.get('/test', (req,res) => {
+app.get('/hello-world', (req,res) => {
     console.log(req)
     res.send('Hello World!')
 })
+
+
+// 잘못된 uri request 대체하는 방식
+app.use((req,res,next)=> {
+    const url = req.url;
+    console.log(`request ${url} has not been found`)
+    res.send({error: '404 not found error'});
+})
+
+
 
 // npm install --global nodemon
 // npm install typescript --save-dev

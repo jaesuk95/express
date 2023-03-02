@@ -1,0 +1,8 @@
+auto generated password: lAORf1eiWXR1zrEm
+
+// get
+db.user.find()
+// create
+db.user.insertOne({name:"other-name",email:"jaesuk95@gmail.com"})
+// update
+db.user.updateOne({_id: ObjectId("6400995ff95e5f6f1aeabc30")}, {$set: {name: "hello"}})

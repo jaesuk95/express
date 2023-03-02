@@ -64,7 +64,90 @@ router.post('/cats', (req,res) => {
     }
 })
 
+// 기존에 있는 고양이 데이터 update -> put
+router.put('/cats/:id', (req,res)=> {
+    try {
+        const id = req.params.id;
+        const body = req.body;
+        let result;
 
+        // 모킹한 데이터를 다 가져와서 일치한 아이디를 검사한다
+        Cat.forEach((cat)=>{
+            if (cat.id === id) {
+                cat = body;
+                result = cat;
+            }
+        })
+
+        res.status(200).send({
+            success: true,
+            data: {
+                message: 'successfully updated',
+                cats: result
+            }
+        });
+    } catch (e) {      // <= e: any You cannot use 'e' at all until the type        "useUnknownInCatchVariables": false, 상태로 변경
+        res.status(200).send({
+            success: false,
+            error_message: e.message,
+        });
+    }
+})
+
+// patch 부분적으로 업데이트
+router.patch('/cats/:id', (req,res)=> {
+    try {
+        const id = req.params.id;
+        const body = req.body;
+        let result;
+
+        // 모킹한 데이터를 다 가져와서 일치한 아이디를 검사한다
+        Cat.forEach((cat)=>{
+            if (cat.id === id) {
+                cat = {...cat, ...body}     // 부분적으로 업데이트 <- 이거 좀 신기하네, 자바에서는 매우 복잡한데
+                result = cat;
+            }
+        })
+
+        res.status(200).send({
+            success: true,
+            data: {
+                message: 'successfully updated',
+                cats: result
+            }
+        });
+    } catch (e) {      // <= e: any You cannot use 'e' at all until the type        "useUnknownInCatchVariables": false, 상태로 변경
+        res.status(200).send({
+            success: false,
+            error_message: e.message,
+        });
+    }
+})
+
+// delete
+router.delete('/cats/:id', (req,res)=> {
+    try {
+        const id = req.params.id;
+        const body = req.body;
+        let result;
+
+        // filter 을 하여 아이디가 같지 않은 데이터만 가져온다
+        const newCat = Cat.filter((cat) => cat.id !== id)
+
+        res.status(200).send({
+            success: true,
+            data: {
+                message: 'successfully updated',
+                cats: newCat
+            }
+        });
+    } catch (e) {      // <= e: any You cannot use 'e' at all until the type        "useUnknownInCatchVariables": false, 상태로 변경
+        res.status(200).send({
+            success: false,
+            error_message: e.message,
+        });
+    }
+})
 
 
 
